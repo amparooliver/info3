@@ -9,7 +9,7 @@ width, height = 800, 800
 ojox, ojoy, ojoz = 1, 1, 5
 
 # Posición inicial de la fuente de luz
-light_position = [1.0, 1.0, 2.0, 0.0]
+light_position = [0.0, 0.5, 1.0, 1.0]
 
 # Ángulos de rotación para la luz y la estrella
 light_rotation_x = 0.0
@@ -82,8 +82,10 @@ def draw_star():
     glTranslatef(pivot_point[0], pivot_point[1], pivot_point[2])
     glRotatef(star_rotation_angle, 0.0, 1.0, 0.0)
     glTranslatef(-pivot_point[0], -pivot_point[1], -pivot_point[2])
+
     # Configura el color de la estrella (amarillo)
     glColor3f(1.0, 1.0, 0.0)
+    
     star_mesh.Draw()
     glPopMatrix()
 
@@ -99,22 +101,27 @@ def display():
     # Setear luz
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, [0.2, 0.2, 0.2, 1.0])
 
-    # Material
+   #Material
     glEnable(GL_COLOR_MATERIAL)
-    glMaterialfv(GL_FRONT, GL_AMBIENT, [0.4, 0.4, 0.4, 1.0])
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
-    glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
-    glMaterialfv(GL_FRONT, GL_SHININESS, 100.0)
+    # glMaterialfv(GL_FRONT, GL_AMBIENT, [0.4, 0.4, 0.4, 1.0])
+    # glMaterialfv(GL_FRONT, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
+    # glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
+    # glMaterialfv(GL_FRONT, GL_SHININESS, 100.0)
+
+    #Este define que partes afectan la iluminacion
+    #GL_FRONT solo a las caras frontales
+    #Color ambiental y color difuso afectaran el color del material
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
     
-    # Dibujar ejes 
+    #dibujar ejes 
     ejes(2)
 
-    # Habilitar luces y fuente de luz
+    #habilitar luces y fuente de luz
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
     glLightfv(GL_LIGHT0, GL_POSITION, light_position)
 
-    # Rotar luz 
+    #rotar luz 
     glPushMatrix()
     glRotatef(light_rotation_x, 1.0, 0.0, 0.0)
     glRotatef(light_rotation_y, 0.0, 1.0, 0.0)
