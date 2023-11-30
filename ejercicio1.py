@@ -3,7 +3,7 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
 # Número de triángulos en la base
-n = 10
+n = 11
 
 def draw_triangle(x, y, size):
     glBegin(GL_TRIANGLES)

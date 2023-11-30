@@ -97,14 +97,35 @@ class RubikCube:
 
                     self.draw_small_cube(x, y, z, cube_size, color_index)
 
-    def rotate_internal_cubes(self, angle, axis):
-        # Rotar el conjunto interno del cubo
-        glTranslatef(0.5, 0.5, 0.5)  # Trasladar al centro del cubo
-        glRotatef(angle, *axis)
-        glTranslatef(-0.5, -0.5, -0.5)  # Trasladar de vuelta al lugar original
+    def rotate_internal_row(self, angle, row):
+        # Calcula el centro de la fila
+        center_x = 0.0
+        center_y = (row - self.size / 2) * 1.0
+        center_z = 0.0
 
-    def rotate_cube(self, angle, axis):
-        glRotatef(angle, *axis)
+        glPushMatrix()
+
+        # Transladar al centro de la fila
+        glTranslatef(center_x, center_y, center_z)
+
+        # Rotar alrededor del centro de la fila
+        glRotatef(angle, 0, 1, 0)
+
+        # Transladar de vuelta a la posición original
+        glTranslatef(-center_x, -center_y, -center_z)
+
+        # Dibuja cada cubo de la fila
+        for i in range(self.size):
+            for k in range(self.size):
+                color_index = (row * self.size + i) * self.size + k
+
+                x = (i - self.size / 2) * 1.0
+                y = (row - self.size / 2) * 1.0
+                z = (k - self.size / 2) * 1.0
+
+                self.draw_small_cube(x, y, z, 1.0, color_index)
+
+        glPopMatrix()
 
 rubik_cube = RubikCube()
 
@@ -172,7 +193,7 @@ def display():
 
     # Rotar cubo
     glPushMatrix()
-    rubik_cube.rotate_internal_cubes(cube_rotation_angle, (0, 1, 0))
+    rubik_cube.rotate_internal_row(cube_rotation_angle, 1)  # Rota la segunda fila en sentido antihorario
     rubik_cube.draw_cube()
     glPopMatrix()
 
@@ -193,11 +214,11 @@ def keypress(key, x, y):
     elif key == b'w':
         light_position[1] += 0.1  # Mueve la luz hacia arriba
 
-    # Control de la rotación del cubo interno
+    # Control de la rotación del cubo
     elif key == b'u':
-        cube_rotation_angle += 5.0  # Rota el conjunto interno en sentido antihorario
+        cube_rotation_angle += 5.0  # Rota la segunda fila en sentido antihorario
     elif key == b'j':
-        cube_rotation_angle -= 5.0  # Rota el conjunto interno en sentido horario
+        cube_rotation_angle -= 5.0  # Rota la segunda fila en sentido horario
 
     # Actualiza la escena después de los cambios
     glutPostRedisplay()
