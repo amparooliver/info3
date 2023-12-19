@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amparo Oliver</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <div class="center-container">
+        <svg width="960" height="500">
+            <circle cx="480" cy="250" r="100" class="center-circle"></circle>
+            <circle cx="450" cy="200" r="20" class="eye"></circle>
+            <circle cx="510" cy="200" r="20" class="eye"></circle>
+            <path d="M430 240 Q480 290 530 240" class="smile"></path>
+        </svg>
+    </div>
+
+    <script>
+        function animateSmile() {
+            d3.select(".smile")
+                .transition()
+                .duration(1000)
+                .attr("d", "M430 240 Q480 310 530 240")  // Cambia la posición de los extremos de la sonrisa
+                .transition()
+                .duration(1000)
+                .attr("d", "M430 240 Q480 290 530 240")  // Vuelve a la posición original
+        }
+        function blinkEyes() {
+            d3.selectAll(".eye")
+                .transition()
+                .duration(200)
+                .attr("r", 5)
+                .transition()
+                .duration(200)
+                .attr("r", 20);
+        }
+
+        // Llama a la función animateSmile cada 3000 milisegundos (3 segundos)
+        setInterval(animateSmile, 3000);
+        setInterval(blinkEyes, 3000);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+/* styles.css */
+body {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* 100% of the viewport height */
+}
+
+.center-container {
+    text-align: center;
+}
+
+.myclass {
+    color: red;
+}
+.center-circle {
+    fill: #d9d500;
+    stroke: #b3af09;
+    stroke-width: 10;
+}
+.eye {
+    fill: black;
+}
+.smile {
+    fill: none;
+    stroke: #b3af09;
+    stroke-width: 10;
+}

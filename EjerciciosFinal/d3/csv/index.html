@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Puntuaciones</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #chart-container {
+            text-align: center;
+        }
+    </style>
+    <script type="module">
+        import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+        // Tamaño del gráfico
+        const width = 400;
+        const height = 300;
+
+        // Crear contenedor SVG
+        const svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Leer datos CSV y realizar acciones con ellos
+        d3.csv("./datos.csv").then(function(data) {
+            // Convertir las puntuaciones a números
+            data.forEach(function(d) {
+                d.puntuacion = +d.puntuacion;
+            });
+
+            // Escala lineal para asignar alturas a las barras
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.puntuacion)])
+                .range([height, 0]);
+
+            // Escala ordinal para asignar colores a las barras
+            const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+            // Ancho de cada barra en el gráfico
+            const barWidth = width / data.length;
+
+            // Dibujar las barras en el gráfico
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("x", (d, i) => i * barWidth)
+                .attr("y", d => yScale(d.puntuacion))
+                .attr("width", barWidth - 1)
+                .attr("height", d => height - yScale(d.puntuacion))
+                .attr("fill", (d, i) => colorScale(i));
+
+            // Etiquetas en el eje x
+            svg.selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .text(d => d.nombre)
+                .attr("x", (d, i) => i * barWidth + barWidth / 2)
+                .attr("y", height + 15)
+                .attr("text-anchor", "middle");
+
+            // Etiquetas con la puntuación encima de cada barra
+            svg.selectAll(".label")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr("class", "label")
+                .text(d => d.puntuacion)
+                .attr("x", (d, i) => i * barWidth + barWidth / 2)
+                .attr("y", d => yScale(d.puntuacion) - 5)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "12px")
+                .attr("fill", "black");
+        });
+    </script>
+</head>
+<body>
+    <div id="chart-container">
+        <h1>Gráfico de Puntuaciones</h1>
+        <div id="chart"></div>
+    </div>
+</body>
+</html>
