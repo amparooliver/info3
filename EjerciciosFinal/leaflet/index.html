@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de Asunción con Leaflet</title>
+  <!-- Incluye la hoja de estilo de Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Ajusta el tamaño del mapa mediante CSS -->
+  <style>
+    #map {
+      height: 400px;
+    }
+    
+    #map-container {
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Arial', sans-serif; /* Cambia 'Arial' por la fuente que desees utilizar */
+      color: #333; /* Cambia el color del texto si es necesario */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Contenedor del mapa con título -->
+<div id="map-container">
+  <h1>Examen Final - Amparo Oliver</h1>
+  <!-- Crea un contenedor para el mapa con un id "map" -->
+  <div id="map"></div>
+</div>
+
+<!-- Incluye la biblioteca de Leaflet -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Inicializa el mapa en un centro y con un nivel de zoom específicos
+  var mymap = L.map('map').setView([-25.3, -57.633], 12);
+
+  // Añade una capa de mapa base de OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(mymap);
+
+  // Añade un marcador en la ubicación de Asunción
+  var marker = L.marker([-25.3, -57.633]).addTo(mymap);
+
+  // Añade un pop-up al marcador
+  marker.bindPopup("<b>Asunción, Paraguay</b><br>Coordenadas: 25°18′00″S, 57°38′00″O").openPopup();
+</script>
+
+</body>
+</html>
